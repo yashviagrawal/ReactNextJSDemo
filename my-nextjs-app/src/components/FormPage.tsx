@@ -66,6 +66,7 @@ const FormPage: React.FC = () => {
 
         if (response.ok) {
           console.log('Data successfully uploaded to the server');
+          setIs
         } else {
           console.error('Failed to upload data to the server');
         }

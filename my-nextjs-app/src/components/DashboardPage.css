@@ -63,4 +63,9 @@
     font-size: 20px;
     cursor: pointer;
   }
+  /* src/components/DashboardPage.css */
+.success-message {
+    color: green;
+    font-weight: bold;
+  }
   
