@@ -49,12 +49,29 @@ const FormPage: React.FC = () => {
     return Object.keys(errors).length === 0; // Return true if there are no errors
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Handle form submission logic here
-      console.log('Form submitted:', formData);
+      try {
+        // POST data to the server
+        const response = await fetch('http://127.0.0.1:8000/data', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          console.log('Data successfully uploaded to the server');
+        } else {
+          console.error('Failed to upload data to the server');
+        }
+      } catch (error) {
+        console.error('An error occurred during the API call:', error);
+      }
     } else {
       console.log('Form has errors. Please correct them.');
     }
