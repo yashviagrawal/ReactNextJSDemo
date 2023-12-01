@@ -1,6 +1,8 @@
-// src/FormPage.tsx
+// src/components/FormPage.tsx
 import React, { useState } from 'react';
+import axios from 'axios';
 import './FormPage.css'; // Import the CSS file
+
 
 interface FormData {
   name: string;
@@ -9,125 +11,104 @@ interface FormData {
   manager: string;
 }
 
-const FormPage: React.FC = () => {
+interface FormPageProps {
+  onClose: () => void;
+}
+
+const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     department: '',
     manager: '',
   });
-
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({
-    name: '',
-    email: '',
-    department: '',
-    manager: '',
-  });
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: '' })); // Clear error when changing input
-  };
-
-  const validateForm = () => {
-    const errors: Record<string, string> = {};
-
-    // Add validation logic here (e.g., required fields, email format, etc.)
-    if (!formData.name.trim()) {
-      errors.name = 'Name is required';
-    }
-    if (!formData.email.trim()) {
-      errors.email = 'Email is required';
-    }
-    if (!formData.department.trim()) {
-      errors.department = 'Department is required';
-    }
-    // Add more validations as needed
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0; // Return true if there are no errors
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      try {
-        // POST data to the server
-        const response = await fetch('http://127.0.0.1:8000/data', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(formData),
-        });
+    try {
+      // Mock API call for form submission
+      await axios.post('http://127.0.0.1:8000/data', formData);
 
-        if (response.ok) {
-          console.log('Data successfully uploaded to the server');
-          setIs
-        } else {
-          console.error('Failed to upload data to the server');
-        }
-      } catch (error) {
-        console.error('An error occurred during the API call:', error);
-      }
-    } else {
-      console.log('Form has errors. Please correct them.');
+      // Assume a successful form submission
+      setIsSuccess(true);
+
+      // Simulate a delay before closing the form and refreshing the dashboard
+      setTimeout(() => {
+        // Close the form pop-up
+        onClose();
+
+        // Reset the success state
+        setIsSuccess(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setIsSuccess(false);
     }
   };
 
   return (
-    <div className="form-page-container">
-      <h2>Form Page</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {formErrors.name && <span className="error">{formErrors.name}</span>}
-        </label>
-        <br />
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {formErrors.email && <span className="error">{formErrors.email}</span>}
-        </label>
-        <br />
-        <label>
-          Department:
-          <input
-            type="text"
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-          />
-          {formErrors.department && <span className="error">{formErrors.department}</span>}
-        </label>
-        <br />
-        <label>
-          Manager:
-          <input
-            type="text"
-            name="manager"
-            value={formData.manager}
-            onChange={handleChange}
-          />
-          {formErrors.manager && <span className="error">{formErrors.manager}</span>}
-        </label>
-        <br />
-        <button type="submit">Submit</button>
-      </form>
+    <div className="form-popup">
+      <div className="form-popup-content">
+        <span onClick={onClose} className="close-button">
+          &times;
+        </span>
+        <h1>Form Page</h1>
+
+        {isSuccess ? (
+          <p className="success-message">Form submitted successfully!</p>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Department:
+              <input
+                type="text"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Manager:
+              <input
+                type="text"
+                name="manager"
+                value={formData.manager}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <button type="submit">Submit</button>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

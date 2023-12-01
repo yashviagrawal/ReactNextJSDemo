@@ -15,25 +15,26 @@ const DashboardPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [userData, setUserData] = useState<UserData[]>([]);
 
-  useEffect(() => {
-    // Fetch data from the API
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://127.0.0.1:8000/data');
-        setUserData(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
 
+  useEffect(() => {
     fetchData();
   }, []); // Empty dependency array means this effect runs once when the component mounts
 
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/data');
+      setUserData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   const handleAddButtonClick = () => {
     setShowForm(true);
   };
 
-  const handleCloseForm = () => {
+  const handleCloseForm = async () => {
+    await fetchData();
+
     setShowForm(false);
   };
 
@@ -70,16 +71,18 @@ const DashboardPage: React.FC = () => {
       </button>
 
       {/* Form Pop-up */}
-      {showForm && (
+
+        {showForm && (
         <div className="form-popup">
-          <div className="form-container">
+            <div className="form-container">
             <span className="close" onClick={handleCloseForm}>
-              &times;
+                &times;
             </span>
-            <FormPage />
-          </div>
+            <FormPage onClose={handleCloseForm} />
+            </div>
         </div>
-      )}
+        )}
+
     </div>
   );
 };
