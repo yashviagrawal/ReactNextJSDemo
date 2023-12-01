@@ -1,7 +1,7 @@
 // src/DashboardPage.tsx
 import React, { useState } from 'react';
 import FormPage from './FormPage';
-import './dash.css';
+import './DashboardPage.css'; // Import the CSS file
 
 const DashboardPage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
@@ -15,20 +15,30 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="dashboard-container">
       <h1>Dashboard Demo</h1>
 
       {/* Table Structure/List */}
-      <ul>
-        <li>
-          <strong>Name</strong>: John Doe, <strong>Email</strong>: john@example.com,{' '}
-          <strong>Department</strong>: HR
-        </li>
-        {/* Add more dummy data as needed */}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Department</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John Doe</td>
+            <td>john@example.com</td>
+            <td>HR</td>
+          </tr>
+          {/* Add more dummy data as needed */}
+        </tbody>
+      </table>
 
       {/* Button for Form Pop-up */}
-      <button onClick={handleAddButtonClick} style={{ position: 'fixed', bottom: 20, right: 20 }}>
+      <button onClick={handleAddButtonClick} className="add-button">
         +
       </button>
 

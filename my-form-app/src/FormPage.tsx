@@ -1,29 +1,68 @@
 // src/FormPage.tsx
 import React, { useState } from 'react';
-import './dash.css';
+import './FormPage.css'; // Import the CSS file
 
 interface FormData {
   name: string;
   email: string;
+  department: string;
+  manager: string;
 }
 
 const FormPage: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({ name: '', email: '' });
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    department: '',
+    manager: '',
+  });
+
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({
+    name: '',
+    email: '',
+    department: '',
+    manager: '',
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormErrors((prevErrors) => ({ ...prevErrors, [name]: '' })); // Clear error when changing input
+  };
+
+  const validateForm = () => {
+    const errors: Record<string, string> = {};
+
+    // Add validation logic here (e.g., required fields, email format, etc.)
+    if (!formData.name.trim()) {
+      errors.name = 'Name is required';
+    }
+    if (!formData.email.trim()) {
+      errors.email = 'Email is required';
+    }
+    if (!formData.department.trim()) {
+      errors.department = 'Department is required';
+    }
+    // Add more validations as needed
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if there are no errors
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+
+    if (validateForm()) {
+      // Handle form submission logic here
+      console.log('Form submitted:', formData);
+    } else {
+      console.log('Form has errors. Please correct them.');
+    }
   };
 
   return (
-    <div>
-      <h1>Form Page</h1>
+    <div className="form-page-container">
+      <h2>Form Page</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Name:
@@ -33,6 +72,7 @@ const FormPage: React.FC = () => {
             value={formData.name}
             onChange={handleChange}
           />
+          {formErrors.name && <span className="error">{formErrors.name}</span>}
         </label>
         <br />
         <label>
@@ -43,6 +83,29 @@ const FormPage: React.FC = () => {
             value={formData.email}
             onChange={handleChange}
           />
+          {formErrors.email && <span className="error">{formErrors.email}</span>}
+        </label>
+        <br />
+        <label>
+          Department:
+          <input
+            type="text"
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+          />
+          {formErrors.department && <span className="error">{formErrors.department}</span>}
+        </label>
+        <br />
+        <label>
+          Manager:
+          <input
+            type="text"
+            name="manager"
+            value={formData.manager}
+            onChange={handleChange}
+          />
+          {formErrors.manager && <span className="error">{formErrors.manager}</span>}
         </label>
         <br />
         <button type="submit">Submit</button>
