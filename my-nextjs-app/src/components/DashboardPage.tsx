@@ -30,8 +30,18 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  const handleNavigateToForm = () => {
-    router.push('/form');
+  const handleNavigateToForm = (data: UserData | null = null) => {
+    // If data is provided, navigate to the form with query parameters
+    if (data) {
+      const { name, email, department, manager, date, status, id } = data;
+      router.push({
+        pathname: '/form',
+        query: { name, email, department, manager, date, status, id },
+      });
+    } else {
+      // If no data, navigate to the form without query parameters
+      router.push('/form');
+    }
   };
 
   const handleFilter = (column: string) => {
@@ -90,7 +100,7 @@ const DashboardPage: React.FC = () => {
               <td>{user.date}</td>
               <td>{user.status}</td>
               <td>
-                <button onClick={() => handleNavigateToForm()} className="edit-button">
+                <button onClick={() => handleNavigateToForm(user)} className="edit-button">
                   Edit
                 </button>
                 <button onClick={() => handleDelete(user.id)} className="delete-button">
@@ -103,7 +113,7 @@ const DashboardPage: React.FC = () => {
       </table>
 
       {/* Button to navigate to Form Page */}
-      <button onClick={handleNavigateToForm} className="add-button">
+      <button onClick={() => handleNavigateToForm()} className="add-button">
         +
       </button>
     </div>
