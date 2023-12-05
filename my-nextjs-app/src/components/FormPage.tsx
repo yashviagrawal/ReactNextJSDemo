@@ -94,13 +94,10 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
   return (
     <div className="form-full-screen">
       <div className="form-header">
-        <button onClick={() => router.push('/dashboard')} className="home-button">
-          Home
-        </button>
+        
       </div>
       <div className="form-content">
         <h1>Form Page</h1>
-
         {isSuccess ? (
           <p className="success-message">Form submitted successfully!</p>
         ) : (
@@ -173,7 +170,9 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
               </select>
             </label>
             <br />
-            <button type="submit">Submit</button>
+            <button onClick={() => router.push('/dashboard')} className="home-button">Home</button>
+            <button className='submit-button' type="submit">Submit</button>
+            
           </form>
         )}
       </div>

@@ -20,7 +20,7 @@
   color: #fff;
   border: none;
   padding: 10px;
-  margin: 10px;
+  margin: 25px 50px 75px 100px;
   cursor: pointer;
 }
 
@@ -53,7 +53,7 @@ select {
   box-sizing: border-box;
 }
 
-button {
+.submit-button {
   background-color: #007bff;
   color: #fff;
   border: none;
