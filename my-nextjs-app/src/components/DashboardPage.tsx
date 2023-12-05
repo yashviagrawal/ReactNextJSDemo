@@ -1,4 +1,3 @@
-// src/DashboardPage.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
@@ -11,6 +10,7 @@ interface UserData {
   manager: string;
   date: string;
   status: string;
+  id: string;
 }
 
 const DashboardPage: React.FC = () => {
@@ -34,23 +34,15 @@ const DashboardPage: React.FC = () => {
     router.push('/form');
   };
 
-  const handleEdit = (email: string) => {
-    // Fetch the user data by email
-    const selectedUser = userData.find(user => user.email === email);
-
-    // Navigate to the form page and pass the user data
-    router.push({
-      pathname: '/form',
-      query: { ...selectedUser },
-    });
+  const handleFilter = (column: string) => {
+    // Implement your filtering logic here based on the selected column
+    console.log(`Filtering by ${column}`);
   };
 
-  const handleDelete = async (email: string) => {
-    // Perform the delete operation (Update your API endpoint accordingly)
+  const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data/${email}`);
-      // Fetch updated data
-      await fetchData();
+      await axios.delete(`https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data/${id}`);
+      fetchData(); // Refresh data after deletion
     } catch (error) {
       console.error('Error deleting data:', error);
     }
@@ -66,11 +58,26 @@ const DashboardPage: React.FC = () => {
           <tr>
             <th>Name</th>
             <th>Email</th>
-            <th>Department</th>
+            <th>
+              Department
+              <span className="filter-icon" onClick={() => handleFilter('department')}>
+                🕳️
+              </span>
+            </th>
             <th>Manager</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>
+              Date
+              <span className="filter-icon" onClick={() => handleFilter('date')}>
+                🕳️
+              </span>
+            </th>
+            <th>
+              Status
+              <span className="filter-icon" onClick={() => handleFilter('status')}>
+                🕳️
+              </span>
+            </th>
+            <th>Action</th> {/* New column for Edit and Delete buttons */}
           </tr>
         </thead>
         <tbody>
@@ -83,10 +90,10 @@ const DashboardPage: React.FC = () => {
               <td>{user.date}</td>
               <td>{user.status}</td>
               <td>
-                <button onClick={() => handleEdit(user.email)} className="edit-button">
+                <button onClick={() => handleNavigateToForm()} className="edit-button">
                   Edit
                 </button>
-                <button onClick={() => handleDelete(user.email)} className="delete-button">
+                <button onClick={() => handleDelete(user.id)} className="delete-button">
                   Delete
                 </button>
               </td>
