@@ -54,16 +54,18 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
 
     try {
       // Mock API call for form submission
-      await axios.post('https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data', formData);
+      const response = await axios.post('https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data', formData);
 
       // Assume a successful form submission
       setIsSuccess(true);
+      
 
       // Simulate a delay before closing the form and refreshing the dashboard
       setTimeout(() => {
         // Close the form pop-up
         // onClose();
-
+        
+        router.push('/dashboard');
         // Reset the success state
         setIsSuccess(false);
       }, 2000);
@@ -148,7 +150,7 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
               </select>
             </label>
             <br />
-            <button onClick={() => router.push('/dashboard')} className="home-button">
+            <button onClick={() => router.push('/dashboard')} className="home-button" type='button'>
           Home
         </button>
             <button className='submit-button' type="submit">Submit</button>
