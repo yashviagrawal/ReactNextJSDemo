@@ -1,8 +1,8 @@
 // src/components/FormPage.tsx
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import axios from 'axios';
 import './FormPage.css'; // Import the CSS file
-
 
 interface FormData {
   name: string;
@@ -16,6 +16,7 @@ interface FormPageProps {
 }
 
 const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
+  const router = useRouter(); // Initialize the router
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -46,6 +47,9 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
 
         // Reset the success state
         setIsSuccess(false);
+
+        // Navigate back to the dashboard
+        router.push('/dashboard');
       }, 2000);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -54,11 +58,13 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="form-popup">
-      <div className="form-popup-content">
-        <span onClick={onClose} className="close-button">
-          &times;
-        </span>
+    <div className="form-full-screen">
+      <div className="form-header">
+        <button onClick={() => router.push('/dashboard')} className="home-button">
+          Home
+        </button>
+      </div>
+      <div className="form-content">
         <h1>Form Page</h1>
 
         {isSuccess ? (

@@ -1,7 +1,7 @@
 // src/DashboardPage.tsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import FormPage from './FormPage';
+import { useRouter } from 'next/router';
 import './DashboardPage.css'; // Import the CSS file
 
 interface UserData {
@@ -12,13 +12,12 @@ interface UserData {
 }
 
 const DashboardPage: React.FC = () => {
-  const [showForm, setShowForm] = useState(false);
   const [userData, setUserData] = useState<UserData[]>([]);
-
+  const router = useRouter();
 
   useEffect(() => {
     fetchData();
-  }, []); // Empty dependency array means this effect runs once when the component mounts
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -28,14 +27,9 @@ const DashboardPage: React.FC = () => {
       console.error('Error fetching data:', error);
     }
   };
-  const handleAddButtonClick = () => {
-    setShowForm(true);
-  };
 
-  const handleCloseForm = async () => {
-    await fetchData();
-
-    setShowForm(false);
+  const handleNavigateToForm = () => {
+    router.push('/form');
   };
 
   return (
@@ -65,24 +59,10 @@ const DashboardPage: React.FC = () => {
         </tbody>
       </table>
 
-      {/* Button for Form Pop-up */}
-      <button onClick={handleAddButtonClick} className="add-button">
+      {/* Button to navigate to Form Page */}
+      <button onClick={handleNavigateToForm} className="add-button">
         +
       </button>
-
-      {/* Form Pop-up */}
-
-        {showForm && (
-        <div className="form-popup">
-            <div className="form-container">
-            <span className="close" onClick={handleCloseForm}>
-                &times;
-            </span>
-            <FormPage onClose={handleCloseForm} />
-            </div>
-        </div>
-        )}
-
     </div>
   );
 };
