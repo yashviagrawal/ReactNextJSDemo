@@ -1,5 +1,5 @@
 // src/components/FormPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import './FormPage.css'; // Import the CSS file
@@ -25,34 +25,24 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
     department: '',
     manager: '',
     date: '',
-    status: 'draft', // Set default status to 'draft'
+    status: '',
   });
   const [isSuccess, setIsSuccess] = useState(false);
-  const [errors, setErrors] = useState<Partial<FormData>>({}); // Store validation errors
 
-  const validateForm = () => {
-    const newErrors: Partial<FormData> = {};
-
-    // Basic validation, you can customize this based on your requirements
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+  useEffect(() => {
+    // Check if there are query parameters
+    const { name, email, department, manager, date, status } = router.query;
+    if (name && email && department && manager && date && status) {
+      setFormData({
+        name: name as string,
+        email: email as string,
+        department: department as string,
+        manager: manager as string,
+        date: date as string,
+        status: status as string,
+      });
     }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
-    }
-
-    if (!formData.department.trim()) {
-      newErrors.department = 'Department is required';
-    }
-
-    if (!formData.manager.trim()) {
-      newErrors.manager = 'Manager is required';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
-  };
+  }, [router.query]); // Run the effect when the query parameters change
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -61,11 +51,6 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (!validateForm()) {
-      // Stop submission if there are validation errors
-      return;
-    }
 
     try {
       // Mock API call for form submission
@@ -77,13 +62,10 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
       // Simulate a delay before closing the form and refreshing the dashboard
       setTimeout(() => {
         // Close the form pop-up
-     
+        // onClose();
 
         // Reset the success state
         setIsSuccess(false);
-
-        // Navigate back to the dashboard
-        router.push('/dashboard');
       }, 2000);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -94,10 +76,10 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
   return (
     <div className="form-full-screen">
       <div className="form-header">
-        
       </div>
       <div className="form-content">
         <h1>Form Page</h1>
+
         {isSuccess ? (
           <p className="success-message">Form submitted successfully!</p>
         ) : (
@@ -110,7 +92,6 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.name}
                 onChange={handleChange}
               />
-              {errors.name && <span className="error-message">{errors.name}</span>}
             </label>
             <br />
             <label>
@@ -121,7 +102,6 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <span className="error-message">{errors.email}</span>}
             </label>
             <br />
             <label>
@@ -132,7 +112,6 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.department}
                 onChange={handleChange}
               />
-              {errors.department && <span className="error-message">{errors.department}</span>}
             </label>
             <br />
             <label>
@@ -143,13 +122,12 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.manager}
                 onChange={handleChange}
               />
-              {errors.manager && <span className="error-message">{errors.manager}</span>}
             </label>
             <br />
             <label>
               Date:
               <input
-                type="date"
+                type="text"
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
@@ -170,9 +148,10 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
               </select>
             </label>
             <br />
-            <button onClick={() => router.push('/dashboard')} className="home-button">Home</button>
+            <button onClick={() => router.push('/dashboard')} className="home-button">
+          Home
+        </button>
             <button className='submit-button' type="submit">Submit</button>
-            
           </form>
         )}
       </div>
