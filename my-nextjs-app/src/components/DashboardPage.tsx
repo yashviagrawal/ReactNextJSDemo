@@ -21,7 +21,7 @@ const DashboardPage: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/data');
+      const response = await axios.get('https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data');
       setUserData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);

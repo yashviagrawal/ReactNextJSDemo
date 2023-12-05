@@ -35,7 +35,7 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
 
     try {
       // Mock API call for form submission
-      await axios.post('http://127.0.0.1:8000/data', formData);
+      await axios.post('https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data', formData);
 
       // Assume a successful form submission
       setIsSuccess(true);
@@ -43,7 +43,7 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
       // Simulate a delay before closing the form and refreshing the dashboard
       setTimeout(() => {
         // Close the form pop-up
-        onClose();
+     
 
         // Reset the success state
         setIsSuccess(false);
