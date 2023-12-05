@@ -5,10 +5,12 @@ import { useRouter } from 'next/router';
 import './DashboardPage.css'; // Import the CSS file
 
 interface UserData {
-  name: string;
-  email: string;
-  department: string;
-  manager: string;
+    name: string;
+    email: string;
+    department: string;
+    manager: string;
+    date: string;
+    status: string;
 }
 
 const DashboardPage: React.FC = () => {
@@ -44,21 +46,24 @@ const DashboardPage: React.FC = () => {
             <th>Email</th>
             <th>Department</th>
             <th>Manager</th>
+            <th>Date</th>
+            <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {userData &&
-            userData.map((user) => (
-              <tr key={user.email}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.department}</td>
-                <td>{user.manager}</td>
-              </tr>
-            ))}
+          {userData.map((user) => (
+            <tr key={user.email}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.department}</td>
+              <td>{user.manager}</td>
+              <td>{user.date}</td>
+              <td>{user.status}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
-
+      
       {/* Button to navigate to Form Page */}
       <button onClick={handleNavigateToForm} className="add-button">
         +

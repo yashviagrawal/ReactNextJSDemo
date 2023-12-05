@@ -26,7 +26,7 @@
     width: 50px; /* Adjust the width to your preference */
     height: 50px; /* Adjust the height to your preference */
     font-size: 24px;
-    background-color: #4caf50;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 10px; /* Add rounded edges */
@@ -65,7 +65,7 @@
   }
   /* src/components/DashboardPage.css */
 .success-message {
-    color: green;
+    color: #007bff;
     font-weight: bold;
   }
   

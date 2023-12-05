@@ -9,6 +9,8 @@ interface FormData {
   email: string;
   department: string;
   manager: string;
+  date: string;
+  status: string;
 }
 
 interface FormPageProps {
@@ -22,16 +24,48 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
     email: '',
     department: '',
     manager: '',
+    date: '',
+    status: 'draft', // Set default status to 'draft'
   });
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errors, setErrors] = useState<Partial<FormData>>({}); // Store validation errors
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const validateForm = () => {
+    const newErrors: Partial<FormData> = {};
+
+    // Basic validation, you can customize this based on your requirements
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    }
+
+    if (!formData.department.trim()) {
+      newErrors.department = 'Department is required';
+    }
+
+    if (!formData.manager.trim()) {
+      newErrors.manager = 'Manager is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      // Stop submission if there are validation errors
+      return;
+    }
 
     try {
       // Mock API call for form submission
@@ -79,6 +113,7 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.name}
                 onChange={handleChange}
               />
+              {errors.name && <span className="error-message">{errors.name}</span>}
             </label>
             <br />
             <label>
@@ -89,6 +124,7 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.email}
                 onChange={handleChange}
               />
+              {errors.email && <span className="error-message">{errors.email}</span>}
             </label>
             <br />
             <label>
@@ -99,6 +135,7 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.department}
                 onChange={handleChange}
               />
+              {errors.department && <span className="error-message">{errors.department}</span>}
             </label>
             <br />
             <label>
@@ -109,6 +146,31 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
                 value={formData.manager}
                 onChange={handleChange}
               />
+              {errors.manager && <span className="error-message">{errors.manager}</span>}
+            </label>
+            <br />
+            <label>
+              Date:
+              <input
+                type="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Status:
+              <select
+                name="status"
+                value={formData.status}
+                onChange={handleChange}
+              >
+                <option value="draft">Draft</option>
+                <option value="reverted">Reverted</option>
+                <option value="submitted">Submitted</option>
+                <option value="approved">Approved</option>
+              </select>
             </label>
             <br />
             <button type="submit">Submit</button>
