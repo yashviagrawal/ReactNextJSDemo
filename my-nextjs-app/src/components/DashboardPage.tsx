@@ -23,7 +23,7 @@ const DashboardPage: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data');
+      const response = await axios.get('https://5f74-2401-4900-1d77-2627-ed85-68c3-18e2-5c9f.ngrok-free.app/data');
       setUserData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -51,7 +51,7 @@ const DashboardPage: React.FC = () => {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data/${id}`);
+      await axios.delete(`https://5f74-2401-4900-1d77-2627-ed85-68c3-18e2-5c9f.ngrok-free.app/data/${id}`);
       fetchData(); // Refresh data after deletion
     } catch (error) {
       console.error('Error deleting data:', error);

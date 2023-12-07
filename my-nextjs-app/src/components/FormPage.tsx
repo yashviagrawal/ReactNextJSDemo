@@ -57,10 +57,10 @@ const FormPage: React.FC<FormPageProps> = ({ onClose }) => {
 
       if (id) {
         // If id exists, make a PUT request to update the existing entry
-        await axios.put(`https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data/${id}`, formData);
+        await axios.put(`https://5f74-2401-4900-1d77-2627-ed85-68c3-18e2-5c9f.ngrok-free.app/data/${id}`, formData);
       } else {
         // If no id, make a POST request to create a new entry
-        await axios.post('https://530b-2401-4900-1720-c0fc-15ba-e7fe-d404-9abb.ngrok-free.app/data', formData);
+        await axios.post('https://5f74-2401-4900-1d77-2627-ed85-68c3-18e2-5c9f.ngrok-free.app/data', formData);
       }
 
       // Assume a successful form submission
